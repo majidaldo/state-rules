@@ -11,6 +11,9 @@ class Rules:
         def add_func(f,  argmap=argmap):
             if argmap is None:
                 argmap = {p:p for p in signature(f).parameters}
+            for s in signature(f).parameters:
+                if s not in argmap:
+                    argmap[s] = s
             
             if 'return' not in argmap:
                 argmap['return'] = f'{f.__module__}.{f.__name__}({','.join(v for v in argmap.values())})'

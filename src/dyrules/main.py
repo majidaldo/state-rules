@@ -1,9 +1,10 @@
 
 
 class Rules:
-    def __init__(self, state: dict = {},):
+    def __init__(self, state: dict = {}, log: bool=True):
         self.state = state
         self.funcs = []
+        self.log = [] if log is True else False
 
     def register(self, argmap: dict[str, str] | None = None):
         """decorator on a function"""
@@ -18,12 +19,6 @@ class Rules:
             if 'return' not in argmap:
                 argmap['return'] = f'{f.__module__}.{f.__name__}({','.join(v for v in argmap.values())})'
 
-            assert('return' in argmap)
-            for p in argmap:
-                if p !='return':
-                    assert(p in signature(f).parameters)
-                    if argmap['return'] != argmap[p]:
-                        assert(argmap[p] in self.state )
             f.argmap = argmap
             f._argmap_no_return = {fa:s  for fa,s in f.argmap.items() if s != f.argmap['return'] }
             self.funcs.append(f)
@@ -37,20 +32,27 @@ class Rules:
             state[f.argmap['return']] = _
         yield state
     
-    def run(self, maxi = 10):
+    def run(self, maxiter = 10):
         i = 0
+        from types import SimpleNamespace as NS
+        class Iteration(NS): pass
+        
         while True:
-            if i >= maxi: break
+            if i >= maxiter: break
             oldstate = self.state.copy()
             _ = iter(self)
             self.state = newstate = next(_)
-            print(oldstate, newstate, i)
+
+            if self.log is not False:
+                self.log.append(Iteration(i=i, state=newstate))
+
             if newstate == oldstate:
                 break
             else:
                 i = i+1
                 newstate = oldstate
                 continue
+            
         return self.state
 
 

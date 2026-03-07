@@ -32,7 +32,7 @@ class Rules:
             _ = {fa:state[s] for fa,s in f._argmap_no_return.items() }
             _ = f(**_)
             state[f.argmap['return']] = _
-            yield state
+        yield state
     
     def run(self, maxi = 10):
         i = 0
@@ -41,9 +41,8 @@ class Rules:
             oldstate = self.state.copy()
             _ = iter(self)
             self.state = newstate = next(_)
-            #print(oldstate, newstate, i)
+            print(oldstate, newstate, i)
             if newstate == oldstate:
-                print(i, )
                 break
             else:
                 i = i+1

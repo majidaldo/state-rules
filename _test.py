@@ -10,7 +10,10 @@ def _():
     r = rm.Rules({'y':3})
 
     @r.register({'x':'y'})
-    def f(x): return 33
+    def f(x): return 3
+
+    @r.register({'x':'y'})
+    def f2(x): return 33
 
     r.run()
     return

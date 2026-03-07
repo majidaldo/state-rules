@@ -1,0 +1,17 @@
+# Ignore everything in the root directory
+*
+# Now, whitelist anything that's a directory
+!*/
+# Whitelist the .gitignore file itself (optional but good practice)
+!.gitignore
+
+# progs
+!*.py
+
+# docs
+!*.md
+
+# config
+!*.toml
+!.python-version
+!uv.lock

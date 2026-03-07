@@ -1,0 +1,2 @@
+- need something that tracks data changes (say in a dict)
+- function mapping data to args

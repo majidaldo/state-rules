@@ -9,7 +9,7 @@ def _():
     import dyrules.main as rm
     r = rm.Rules()
 
-    @r.decorator
+    @r.register
     def f(): ...
 
 

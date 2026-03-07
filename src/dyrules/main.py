@@ -10,8 +10,10 @@ class Rules:
         self.funcs = funcs
 
     @property
-    def decorator(self):
+    def register(self):
         def add_func(f):
             self.funcs.append(f)
         return add_func
+    
+    
 

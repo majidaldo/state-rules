@@ -7,14 +7,17 @@ app = marimo.App()
 @app.cell
 def _():
     import dyrules.main as rm
-    r = rm.Rules()
+    r = rm.Rules({'y':3})
 
-    @r.register
-    def f(): ...
+    @r.register({'x':'y'})
+    def f(x): return 33
+
+    r.do()
+    return
 
 
-    r.funcs
-
+@app.cell
+def _():
     return
 
 

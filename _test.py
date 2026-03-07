@@ -12,7 +12,7 @@ def _():
     @r.register({'x':'y'})
     def f(x): return 33
 
-    r.do()
+    r.run()
     return
 
 

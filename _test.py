@@ -13,7 +13,7 @@ def _():
     def f1(x):
         return x+x
 
-    r.run(5)
+    r.run(0)
     r.log
     return (r,)
 

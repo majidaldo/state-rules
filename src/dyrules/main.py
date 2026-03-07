@@ -36,6 +36,9 @@ class Rules:
         i = 0
         from types import SimpleNamespace as NS
         class Iteration(NS): pass
+
+        if self.log is not False:
+            self.log.append(Iteration(i=i, state=self.state.copy()))
         
         while True:
             if i >= maxiter: break
@@ -44,7 +47,7 @@ class Rules:
             self.state = newstate = next(_)
 
             if self.log is not False:
-                self.log.append(Iteration(i=i, state=newstate.copy()))
+                self.log.append(Iteration(i=i+1, state=newstate.copy()))
 
             if newstate == oldstate:
                 break

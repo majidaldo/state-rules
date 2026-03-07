@@ -44,7 +44,7 @@ class Rules:
             self.state = newstate = next(_)
 
             if self.log is not False:
-                self.log.append(Iteration(i=i, state=newstate))
+                self.log.append(Iteration(i=i, state=newstate.copy()))
 
             if newstate == oldstate:
                 break

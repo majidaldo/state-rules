@@ -7,19 +7,20 @@ app = marimo.App()
 @app.cell
 def _():
     import dyrules.main as rm
-    r = rm.Rules({'x':'x'})
+    r = rm.Rules({'x':1})
     #
     @r.register({'return': 'x'})
     def f1(x):
-        return x
+        return x+x
 
-    r.run()
+    r.run(5)
     r.log
-    return
+    return (r,)
 
 
 @app.cell
-def _():
+def _(r):
+    r.log[0]
     return
 
 

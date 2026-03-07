@@ -20,7 +20,7 @@ class Rules:
                 argmap['return'] = f'{f.__module__}.{f.__name__}({','.join(v for v in argmap.values())})'
 
             f.argmap = argmap
-            f._argmap_no_return = {fa:s  for fa,s in f.argmap.items() if s != f.argmap['return'] }
+            f._argmap_no_return = {fa:s  for fa,s in f.argmap.items() if (fa != 'return') }
             self.funcs.append(f)
         return add_func
     
@@ -39,7 +39,7 @@ class Rules:
         
         while True:
             if i >= maxiter: break
-            oldstate = self.state.copy()
+            oldstate = self.state.copy() # shallow vs deep?
             _ = iter(self)
             self.state = newstate = next(_)
 

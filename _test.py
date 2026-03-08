@@ -9,18 +9,17 @@ def _():
     import dyrules.main as rm
     r = rm.Rules({'x':1})
     #
-    @r.register({'return': 'x'})
+    @r.register({'return': 'x', 'x': lambda k: (print(k), True )[1] })
     def f1(x):
         return x+x
 
-    r.run(0)
+    r.run(5)
     r.log
-    return (r,)
+    return
 
 
 @app.cell
-def _(r):
-    r.log[0]
+def _():
     return
 
 

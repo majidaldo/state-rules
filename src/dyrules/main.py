@@ -1,7 +1,11 @@
-
+class types:
+    state = dict # can it be something else? just need mapping and iter
+    from typing import Callable
+    argmap = dict[str, str | Callable ]  # callable[state keys,-> ]
 
 class Rules:
-    def __init__(self, state: dict = {}, log: bool=True):
+
+    def __init__(self, state: types.state = {}, log: bool=True):
         self.state = state
         self.funcs = []
         self.log = [] if log is True else False
@@ -24,10 +28,22 @@ class Rules:
             self.funcs.append(f)
         return add_func
     
+    @classmethod
+    def _argmapf2args(cls, am: types.argmap, state: types.state):
+        for fa, s in am.items():
+            if callable(s):
+                for sk,sv in state.items():
+                    ssk = s(sk)
+                    if ssk == True:
+                        yield fa, sv
+                    else:
+                        assert(ssk == False)
+    
     def __iter__(self):
         state = self.state
         for f in self.funcs:
-            _ = {fa:state[s] for fa,s in f._argmap_no_return.items() }
+            _ = {fa:state[s]  for fa,s in f._argmap_no_return.items() if isinstance(s, str) } # simple case
+            _.update(self._argmapf2args(f._argmap_no_return, state ) )
             _ = f(**_)
             state[f.argmap['return']] = _
         yield state

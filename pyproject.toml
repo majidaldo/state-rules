@@ -1,5 +1,5 @@
 [project]
-name = "dyrules"
+name = "state-rules"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -9,13 +9,13 @@ dependencies = [
     "pyzmq>=27.1.0",
 ]
 
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
-    "marimo"
+    "marimo", "pyzmq",
 ]
 
 [project.scripts]
-dyrules = "dyrules:main"
+dyrules = "state_rules:main"
 
 [build-system]
 requires = ["uv_build>=0.10.8,<0.11.0"]

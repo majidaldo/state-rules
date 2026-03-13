@@ -1,7 +1,8 @@
 class types:
+    state_keys = int | str
     state = dict # can it be something else? just need mapping and iter
     from typing import Callable
-    argmap = dict[str, str | Callable ]  # callable[state keys,-> ]
+    argmap = dict[state_keys, state_keys | Callable ]  # callable[state keys,-> ]
 
 class Rules:
 
@@ -10,7 +11,7 @@ class Rules:
         self.funcs = []
         self.log = [] if log is True else False
 
-    def register(self, argmap: dict[str, str] | None = None):
+    def register(self, argmap: types.argmap | None = None):
         """decorator on a function"""
         from inspect import signature
         def add_func(f,  argmap=argmap):

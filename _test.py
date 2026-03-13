@@ -10,7 +10,6 @@ def _():
     r = rm.Rules({'x':1})
     #
     @r.register({'return': 'x', 'x': lambda k: (print(k), True )[1] })
-
     def f1(x):
         return x+x
 

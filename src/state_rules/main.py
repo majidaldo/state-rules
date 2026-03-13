@@ -42,7 +42,7 @@ class Rules:
     def __iter__(self):
         state = self.state
         for f in self.funcs:
-            _ = {fa:state[s]  for fa,s in f._argmap_no_return.items() if isinstance(s, str) } # simple case
+            _ = {fa:state[s]  for fa,s in f._argmap_no_return.items() if not callable(s) } # simple case
             _.update(self._argmapf2args(f._argmap_no_return, state ) )
             _ = f(**_)
             state[f.argmap['return']] = _

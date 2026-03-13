@@ -358,12 +358,8 @@ wheels = [
 
 [[package]]
 name = "state-rules"
-version = "0.1.0"
+version = "1"
 source = { editable = "." }
-dependencies = [
-    { name = "marimo" },
-    { name = "pyzmq" },
-]
 
 [package.dev-dependencies]
 dev = [
@@ -372,10 +368,6 @@ dev = [
 ]
 
 [package.metadata]
-requires-dist = [
-    { name = "marimo", specifier = ">=0.20.4" },
-    { name = "pyzmq", specifier = ">=27.1.0" },
-]
 
 [package.metadata.requires-dev]
 dev = [

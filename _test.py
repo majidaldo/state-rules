@@ -7,9 +7,9 @@ app = marimo.App()
 @app.cell
 def _():
     import state_rules.main as rm
-    r = rm.Rules({0:1})
+    r = rm.Rules({'x':1})
     #
-    @r.register({'return': 0, 'x': 0 })
+    @r.register({'return': 'x', 'x': 'x' })
     def f1(x):
         return x+x
 

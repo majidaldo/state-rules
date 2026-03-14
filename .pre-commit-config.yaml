@@ -1,0 +1,12 @@
+# https://github.com/acarapetis/jj-pre-push?tab=readme-ov-file
+#[aliases]
+#push = ["util", "exec", "--", "uvx", "jj-pre-push", "push"]
+
+repos:
+  - id: bump-ver
+    name: bump version
+    language: system
+    entry: python tasks.py build --commit=True --update=True
+    pass_filenames: false
+    stages:
+      - pre-commit

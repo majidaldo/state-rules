@@ -13,5 +13,6 @@
 
 # config
 !*.toml
+!*.yaml
 !.python-version
 !uv.lock

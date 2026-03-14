@@ -18,4 +18,4 @@ repos:
       entry: python tasks.py build --commit=True --update=True
       pass_filenames: false
       stages:
-        - pre-commit
+        - pre-push

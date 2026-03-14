@@ -3,7 +3,6 @@ pkgs = [pkg]
 
 from subprocess import CalledProcessError
 def get_rev():
-    return 'main'
     from subprocess import check_output as run
     return run('git rev-parse --abbrev-ref HEAD', text=True, shell=True).strip()
 try:

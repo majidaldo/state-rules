@@ -22,7 +22,7 @@ class Rules:
                     argmap[s] = s
             
             if 'return' not in argmap:
-                argmap['return'] = f'{f.__module__}.{f.__name__}({','.join(v for v in argmap.values())})'
+                argmap['return'] = f'{f.__module__}.{f.__name__}()'#{','.join(v for v in argmap.values())})' doesnt work when v is callable
 
             f.argmap = argmap
             f._argmap_no_return = {fa:s  for fa,s in f.argmap.items() if (fa != 'return') }
@@ -37,8 +37,7 @@ class Rules:
                     ssk = s(sk)
                     if ssk == True:
                         yield fa, sv
-                    else:
-                        assert(ssk == False)
+                    else: assert(ssk == False)
     
     def __iter__(self):
         state = self.state
@@ -46,11 +45,20 @@ class Rules:
             _ = {fa:state[s]  for fa,s in f._argmap_no_return.items() if not callable(s) } # simple case
             _.update(self._argmapf2args(f._argmap_no_return, state ) )
             _ = f(**_)
-            state[f.argmap['return']] = _
+            rm = f.argmap['return']
+            if not callable(rm):
+                state[rm] = _
+            else:
+                assert(callable(rm))
+                for sk, sv in (state.copy() if self.i == 0 else state ).items():    # have to copy...
+                    rmsk = rm(sk)
+                    if rmsk == True:
+                        state[sk] = _
+                    else: assert(rmsk == False)
         yield state
     
     def run(self, maxiter = 10):
-        i = 0
+        i = self.i = 0
         from types import SimpleNamespace as NS
         class Iteration(NS): pass
 
@@ -59,12 +67,12 @@ class Rules:
         
         while True:
             if i >= maxiter: break
-            oldstate = self.state.copy() # shallow vs deep?
+            oldstate = self.state.copy()                                    # shallow vs deep?
             _ = iter(self)
             self.state = newstate = next(_)
 
             if self.log is not False:
-                self.log.append(Iteration(i=i+1, state=newstate.copy()))
+                self.log.append(Iteration(i=i+1, state=newstate.copy()))    # shallow vs deep?
 
             if newstate == oldstate:
                 break

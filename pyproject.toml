@@ -11,7 +11,7 @@ dependencies = [
 dev = [
     'fire',
     "marimo", "pyzmq",
-    'pre-commit',
+    'python-box', 'wrapt', 'ipdb',
 ]
 
 [project.scripts]

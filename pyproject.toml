@@ -1,6 +1,6 @@
 [project]
 name = "state-rules"
-version = "1"
+version = "16"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.14"
@@ -10,6 +10,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    'fire',
     "marimo", "pyzmq",
 ]
 

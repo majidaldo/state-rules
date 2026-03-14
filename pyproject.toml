@@ -12,6 +12,7 @@ dependencies = [
 dev = [
     'fire',
     "marimo", "pyzmq",
+    'pre-commit',
 ]
 
 [project.scripts]

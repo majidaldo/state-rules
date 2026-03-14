@@ -3,6 +3,7 @@
 #push = ["util", "exec", "--", "uvx", "jj-pre-push", "push"]
 
 repos:
+- hooks:
   - id: bump-ver
     name: bump version
     language: system
@@ -10,3 +11,4 @@ repos:
     pass_filenames: false
     stages:
       - pre-commit
+  repo: local

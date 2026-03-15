@@ -11,23 +11,25 @@ class Rules:
         self.funcs = []
         self.log = [] if log is True else False
 
+    def add_func(self, f, argmap: types.argmap | None = None):
+        from inspect import signature
+        if argmap is None:
+            argmap = {p:p for p in signature(f).parameters}
+        for s in signature(f).parameters:
+            if s not in argmap:
+                argmap[s] = s
+        
+        if 'return' not in argmap:
+            argmap['return'] = f'{f.__module__}.{f.__name__}()'#{','.join(v for v in argmap.values())})' doesnt work when v is callable
+
+        f.argmap = argmap
+        f._argmap_no_return = {fa:s  for fa,s in f.argmap.items() if (fa != 'return') }
+        self.funcs.append(f)
+
+
     def register(self, argmap: types.argmap | None = None):
         """decorator on a function"""
-        from inspect import signature
-        def add_func(f,  argmap=argmap):
-            if argmap is None:
-                argmap = {p:p for p in signature(f).parameters}
-            for s in signature(f).parameters:
-                if s not in argmap:
-                    argmap[s] = s
-            
-            if 'return' not in argmap:
-                argmap['return'] = f'{f.__module__}.{f.__name__}()'#{','.join(v for v in argmap.values())})' doesnt work when v is callable
-
-            f.argmap = argmap
-            f._argmap_no_return = {fa:s  for fa,s in f.argmap.items() if (fa != 'return') }
-            self.funcs.append(f)
-        return add_func
+        return lambda f: self.add_func(f, argmap=argmap)
     
     @classmethod
     def _argmapf2args(cls, am: types.argmap, state: types.state):

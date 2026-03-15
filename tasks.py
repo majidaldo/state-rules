@@ -46,7 +46,7 @@ def ncommits(rev=rev):
     return int(c)
 
 def chk_ver():
-    from bim2rdf.core import __version__ as v
+    from state_rules import __version__ as v
     return str(v) == str(ver())
 
 

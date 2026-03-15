@@ -36,16 +36,16 @@ class Rules:
         return decorator
 
     
-    def __iter__(self):
-        s = self.state
+    def _apply(self, state):
+        s = state
         for f in self.funcs:
             _ = {a:s[sk] for a,sk in f.argmap.items() }
             _ = f.f(**_)
             s[f.return_statekey] = _
-        yield s
+        return s
     
 
-    def run(self, maxiter = 10):
+    def run(self, maxiter = 10): # stopping=None
         i = self.i = 0
         from types import SimpleNamespace as NS
         class Iteration(NS): pass
@@ -56,13 +56,13 @@ class Rules:
         while True:
             if i >= maxiter: break
             oldstate = self.state.copy()                                    # shallow vs deep?
-            _ = iter(self)
-            self.state = newstate = next(_)
+            _ = self._apply(self.state)
+            self.state = newstate = _
 
             if self.log is not False:
                 self.log.append(Iteration(i=i+1, state=newstate.copy()))    # shallow vs deep?
 
-            if newstate == oldstate:
+            if newstate == oldstate: # b/c of this, have to copy
                 break
             else:
                 i = i+1

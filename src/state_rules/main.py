@@ -39,6 +39,7 @@ class Rules:
                     ssk = s(sk)
                     if ssk == True:
                         yield fa, sv
+                        break
                     else: assert(ssk == False)
     
     def __iter__(self):

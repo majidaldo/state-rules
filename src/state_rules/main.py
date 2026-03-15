@@ -50,10 +50,10 @@ class Rules:
                 state[rm] = _
             else:
                 assert(callable(rm))
-                for sk, sv in (state.copy() if self.i == 0 else state ).items():    # have to copy...
+                for sk, sv in (state.copy() if self.i == 0 else state ).items():          # have to copy...
                     rmsk = rm(sk)
                     if rmsk == True:
-                        state[sk] = _
+                        state[sk] = _                                                     # ...b/c this might change
                     else: assert(rmsk == False)
         yield state
     

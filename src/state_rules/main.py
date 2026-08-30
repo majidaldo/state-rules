@@ -50,12 +50,13 @@ class Rules:
         from types import SimpleNamespace as NS
         class Iteration(NS):    pass
 
+
+        from copy import deepcopy as copy
         if self.log is not False:
-            self.log.append(Iteration(i=i, state=self.state.copy()))
+            self.log.append(Iteration(i=i, state=copy(self.state)))
         if stopping is not None:
             if stopping(self.state): return self.state
 
-        from copy import deepcopy as copy
         # shallow vs deep copy?
         while True:
             if i >= maxiter: break

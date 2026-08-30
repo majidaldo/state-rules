@@ -41,7 +41,5 @@ Iteration(i=5, state={'x': 32})
 
 - The state is a (flat) dictionary but you can use a fancy dotted dict if you want more structure.
 Then, use use a function to get at a key.
-In the example above: `x -> lambda k: k=='x' or k.endswith('.x')`
-- Cache function calls (yourself)
-- Define your notion of dictionary equality
-as the program compares the state before and after rule application
+- Cache function calls (yourself).
+- Use `stopping` critereon to early stop.

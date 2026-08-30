@@ -7,7 +7,7 @@ app = marimo.App()
 @app.cell
 def _():
     import state_rules.main as rm
-    _r = rm.Rules({'x':1})
+    _r = rm.Rules({'x':1}, log=True)
     @_r.register({
         'x': 'x',
          'y': 'x',
@@ -32,7 +32,7 @@ def _(rm):
     },
     default_box=True, box_dots=True)
     _s = dict(_s.items(dotted=True))
-    _r = rm.Rules(_s)
+    _r = rm.Rules(_s, log=True)
     # second argmap
     @_r.register({'x': 'z.y.x', 'return': 'z.y.x.r' })
     # first argmap

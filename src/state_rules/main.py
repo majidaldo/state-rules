@@ -7,7 +7,7 @@ class types:
 
 class Rules:
 
-    def __init__(self, state: types.state = {}, log: bool=True):
+    def __init__(self, state: types.state = {}, *, log: bool=False):
         self.state = state
         self.funcs = []
         self.log = [] if log is True else False
@@ -42,13 +42,13 @@ class Rules:
             _ = {a:s[sk] for a,sk in f.argmap.items() }
             _ = f.f(**_)
             s[f.return_statekey] = _
-        return s
-    
+            yield f, s
 
-    def run(self, maxiter = 10): # stopping=None
+
+    def run(self, maxiter = 10,):
         i = self.i = 0
         from types import SimpleNamespace as NS
-        class Iteration(NS): pass
+        class Iteration(NS):    pass
 
         if self.log is not False:
             self.log.append(Iteration(i=i, state=self.state.copy()))
@@ -56,11 +56,15 @@ class Rules:
         while True:
             if i >= maxiter: break
             oldstate = self.state.copy()                                    # shallow vs deep?
-            _ = self._apply(self.state)
-            self.state = newstate = _
-
-            if self.log is not False:
-                self.log.append(Iteration(i=i+1, state=newstate.copy()))    # shallow vs deep?
+            s = self.state
+            for f,s in self._apply(self.state):
+                if self.log is not False:
+                    self.log.append(
+                        Iteration(i=i+1,
+                            rule=f, 
+                            state=s.copy(),)
+                    )
+            self.state = newstate = s
 
             if newstate == oldstate: # b/c of this, have to copy
                 break
@@ -70,5 +74,4 @@ class Rules:
                 continue
             
         return self.state
-
 

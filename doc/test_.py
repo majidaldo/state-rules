@@ -15,7 +15,7 @@ def _():
     def f1(x, y,):
         return x+y
 
-    _r.run(5)
+    _r.run(5, stopping=lambda s: True)
     _r.log
     return (rm,)
 

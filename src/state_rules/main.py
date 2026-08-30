@@ -44,26 +44,31 @@ class Rules:
             s[f.return_statekey] = _
             yield f, s
 
-
-    def run(self, maxiter = 10,):
+    from typing import Callable
+    def run(self, maxiter = 10, *, stopping: Callable[[types.state], bool] | None = None):
         i = self.i = 0
         from types import SimpleNamespace as NS
         class Iteration(NS):    pass
 
         if self.log is not False:
             self.log.append(Iteration(i=i, state=self.state.copy()))
-        
+        if stopping is not None:
+            if stopping(self.state): return self.state
+
+        from copy import deepcopy as copy
+        # shallow vs deep copy?
         while True:
             if i >= maxiter: break
-            oldstate = self.state.copy()                                    # shallow vs deep?
+            oldstate = copy(self.state)
             s = self.state
             for f,s in self._apply(self.state):
                 if self.log is not False:
                     self.log.append(
                         Iteration(i=i+1,
                             rule=f, 
-                            state=s.copy(),)
-                    )
+                            state=copy(s),))
+                if stopping is not None:
+                    if stopping(s): return s
             self.state = newstate = s
 
             if newstate == oldstate: # b/c of this, have to copy

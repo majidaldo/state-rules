@@ -15,8 +15,9 @@ def _():
     def f1(x, y,):
         return x+y
 
-    _r.run(5, stopping=lambda s: True)
+    _r.run(5, )
     _r.log
+
     return (rm,)
 
 
@@ -28,7 +29,7 @@ def _(rm):
     _s = Box({
     'x':{'x': 1},
     'z.y.x' : 3,
-    'y': 'yv',
+    'y': ['yv'],
     },
     default_box=True, box_dots=True)
     _s = dict(_s.items(dotted=True))
@@ -38,8 +39,9 @@ def _(rm):
     # first argmap
     @_r.register({'x': 'x.x', 'return': 'x.x.r' })
     def fd(x): return x+x
-    _r.run(5)
-    _r.log
+    _r.run(9)
+    print(*_r.log, sep='\n')
+    Box(_r.state)
     return
 
 

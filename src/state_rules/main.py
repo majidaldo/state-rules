@@ -1,8 +1,8 @@
 class types:
-    state_key = int | str # hashable?
-    state = dict # can it be something else? just need mapping and iter
-    var = str
-    argmap = dict[var, state_key]
+    type state_key = int | str # hashable?
+    type state = dict # can it be something else? just need mapping and iter
+    type var = str
+    type argmap = dict[var, state_key]
 
 
 class Rules:
@@ -20,7 +20,7 @@ class Rules:
             if s not in argmap:
                 argmap[s] = s
         if 'return' not in argmap:
-            argmap['return'] = f'{f.__module__}.{f.__name__}()'
+            argmap['return'] = f # f'{f.__module__}.{f.__name__}()'
 
         from types import SimpleNamespace as NS
         _ = NS(
@@ -41,7 +41,11 @@ class Rules:
         for f in self.funcs:
             _ = {a:s[sk] for a,sk in f.argmap.items() }
             _ = f.f(**_)
-            s[f.return_statekey] = _
+            if isinstance(f.return_statekey, dict) and isinstance(_, dict):
+                f.return_statekey.update(_)
+                s.update(f.return_statekey)
+            else:
+                s[f.return_statekey] = _
             yield f, s
 
     from typing import Callable
@@ -52,22 +56,24 @@ class Rules:
 
 
         from copy import deepcopy as copy
+        # shallow vs deep copy? deep more general. shallow for simple objects.
+        # maybe no performance loss if state is shallow.
         if self.log is not False:
             self.log.append(Iteration(i=i, state=copy(self.state)))
         if stopping is not None:
             if stopping(self.state): return self.state
 
-        # shallow vs deep copy?
         while True:
             if i >= maxiter: break
+            # alt. is to 'old*hash*' == new*hash* to potentially avoid copying
             oldstate = copy(self.state)
             s = self.state
             for f,s in self._apply(self.state):
                 if self.log is not False:
                     self.log.append(
                         Iteration(i=i+1,
-                            rule=f, 
-                            state=copy(s),))
+                            state=copy(s),
+                            rule=f,) )
                 if stopping is not None:
                     if stopping(s): return s
             self.state = newstate = s

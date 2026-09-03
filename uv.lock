@@ -561,7 +561,7 @@ wheels = [
 
 [[package]]
 name = "state-rules"
-version = "2026.8.48"
+version = "2026.9.50"
 source = { editable = "." }
 
 [package.dev-dependencies]

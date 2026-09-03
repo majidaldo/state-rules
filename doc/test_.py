@@ -11,14 +11,33 @@ def _():
     @_r.register({
         'x': 'x',
          'y': 'x',
-        'return': 'x',})
-    def f1(x, y,):
+        'return': 'x',
+    })
+    def _f(x, y,):
         return x+y
 
     _r.run(5, )
     _r.log
-
     return (rm,)
+
+
+@app.cell
+def _(rm):
+    # return to state
+    _r = rm.Rules({'x':1}, log=True)
+    @_r.register({
+        'x': 'x',
+         'y': 'x',
+        'return': {'const':'abc'}})
+    def _f(x, y,):
+        _ = {'a': 1, 'b': 2, 'c': 3, 'r': x+y, }
+        _['x'] = x+y
+        _['y'] = x+y+1
+        return _
+
+    _r.run(5,)
+    _r.log
+    return
 
 
 @app.cell
@@ -31,7 +50,7 @@ def _(rm):
     'z.y.x' : 3,
     'y': ['yv'],
     },
-    default_box=True, box_dots=True)
+        default_box=True, box_dots=True)
     _s = dict(_s.items(dotted=True))
     _r = rm.Rules(_s, log=True)
     # second argmap
@@ -39,9 +58,11 @@ def _(rm):
     # first argmap
     @_r.register({'x': 'x.x', 'return': 'x.x.r' })
     def fd(x): return x+x
+
     _r.run(9)
     print(*_r.log, sep='\n')
-    Box(_r.state)
+    Box(_r.state,
+        default_box=True, box_dots=True)
     return
 
 
